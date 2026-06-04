@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TheZero — TheZero Network Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --r0:#0a0a0a;--r1:#111114;--r2:#18181e;--r3:#222228;--r4:#2e2e36;
+  --red:#d42b2b;--red2:#b81f1f;--red3:#8a1515;--redlit:#e84040;
+  --white:#f0f0f0;--white2:#c8c8c8;--white3:#909090;
+  --border:#2e2e36;--borderl:#3a1a1a;
+  --green:#4ade80;--gold:#f0c040;
+}
+body{background:var(--r0);color:var(--white);font-family:'Sarabun',sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* ===== LOGIN SCREEN ===== */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--r0);position:fixed;inset:0;z-index:1000;}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,#3a0a0a22 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,#1a0a2a22 0%,transparent 60%);}
+.login-box{position:relative;background:var(--r2);border:1px solid var(--borderl);border-radius:20px;padding:36px 32px;width:100%;max-width:420px;box-shadow:0 0 60px #d42b2b18;max-height:92vh;overflow-y:auto;}
+.login-logo{width:56px;height:56px;background:var(--red);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;margin:0 auto 14px;}
+.login-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;text-align:center;margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--white3);text-align:center;margin-bottom:20px}
+.login-tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--r3);border-radius:10px;padding:4px}
+.ltab{flex:1;padding:8px;border-radius:8px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;color:var(--white3);transition:all .2s;white-space:nowrap}
+.ltab.active{background:var(--red2);color:#fff}
+.form-label{display:block;font-size:12px;color:var(--white3);margin-bottom:5px;letter-spacing:.5px}
+.form-input{width:100%;background:var(--r3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--white);font-size:14px;font-family:'Sarabun',sans-serif;outline:none;margin-bottom:12px;transition:border .15s}
+.form-input:focus{border-color:var(--red3)}
+.login-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--red2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;letter-spacing:.3px;margin-top:4px}
+.login-btn:hover{background:var(--red)}
+.login-btn:active{transform:scale(.98)}
+.login-hint{margin-top:14px;font-size:11px;color:var(--white3);text-align:center;background:var(--r3);border-radius:8px;padding:9px 12px;line-height:1.8}
+.login-hint b{color:var(--redlit)}
+.login-err{background:#1a0e0e;border:1px solid var(--red3);color:var(--redlit);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none}
+.login-ok{background:#0a1a0a;border:1px solid #2a5a2a;color:#4ade80;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none}
+.discord-link-login{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:10px;background:#1e1f22;border:1px solid #404249;border-radius:8px;font-size:12px;color:#b9bbbe;cursor:pointer;transition:all .2s;text-decoration:none}
+.discord-link-login:hover{border-color:#5865f2;color:#fff;background:#2a2d31}
+.discord-icon{width:20px;height:20px;background:#5865f2;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* ===== MAIN APP ===== */
+#mainApp{display:none}
+.hero{background:var(--r1);border-bottom:1px solid var(--borderl);padding:18px 32px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hero-left{display:flex;align-items:center;gap:12px}
+.logo-box{width:44px;height:44px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#fff}
+.hero-title{font-family:'Cinzel',serif;font-size:22px;color:var(--white);letter-spacing:1px}
+.hero-sub{font-size:12px;color:var(--white3);margin-top:2px}
+.hero-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hero-bal{background:var(--r2);border:1px solid var(--red3);border-radius:10px;padding:8px 18px;text-align:right}
+.hero-bal .blabel{font-size:11px;color:var(--white3)}
+.hero-bal .bamt{font-size:20px;font-weight:600;color:var(--redlit);font-family:'Cinzel',serif}
+.user-badge{display:flex;align-items:center;gap:8px;background:var(--r2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;cursor:pointer}
+.user-badge:hover{border-color:var(--red3)}
+.user-avatar{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'Cinzel',serif}
+.user-name{font-size:13px;font-weight:600}
+.user-role{font-size:10px;color:var(--white3)}
+.logout-btn{background:var(--r3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--white3);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s}
+.logout-btn:hover{border-color:var(--red3);color:var(--redlit)}
+
+.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 32px;background:var(--r1);overflow-x:auto}
+.tab{padding:12px 20px;font-size:13px;font-weight:600;color:var(--white3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white2)}
+.tab.active{color:var(--redlit);border-bottom-color:var(--red)}
+.tab.admin-tab{color:#f0c040}
+.tab.admin-tab.active{color:#f0c040;border-bottom-color:#f0c040}
+
+.container{max-width:1200px;margin:0 auto;padding:24px 32px}
+.page{display:none}
+.page.active{display:block}
+.sec-title{font-size:11px;color:var(--white3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+
+/* ===== SHOP / RANK CARDS ===== */
+.ranks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.rc{background:var(--r2);border-radius:18px;padding:0;border:1px solid var(--border);cursor:default;transition:all .25s;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.rc:hover{border-color:#4a1a1a;transform:translateY(-4px);box-shadow:0 12px 32px #00000040}
+.rc.owned{border-color:#3a1a1a;background:#130d0d}
+.rc .stripe{height:3px;width:100%;flex-shrink:0}
+.rc-body{padding:16px;flex:1;display:flex;flex-direction:column}
+.rbadge{display:inline-flex;align-items:center;gap:5px;font-family:'Cinzel',serif;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:10px;letter-spacing:.5px}
+.rc .rname{font-size:18px;font-weight:700;font-family:'Cinzel',serif;margin-bottom:6px}
+.rc .rdesc{font-size:11px;color:var(--white3);line-height:1.5;margin-bottom:12px}
+
+/* Commands section */
+.cmd-section{margin-bottom:10px}
+.cmd-label{font-size:10px;color:var(--white3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;font-weight:600}
+.cmd-list{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.cmd-item{font-size:11px;color:#c0e0ff;padding:3px 8px;background:#0a1520;border-radius:5px;font-family:monospace;border:1px solid #1a3040}
+
+/* Limits section */
+.limits-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:10px}
+.limit-item{background:var(--r3);border-radius:6px;padding:5px 8px;font-size:10px}
+.limit-key{color:var(--white3);margin-bottom:1px}
+.limit-val{font-weight:700;font-size:11px;font-family:'Cinzel',serif}
+
+.fly-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:6px;font-weight:600;margin-bottom:10px}
+.fly-yes{background:#0a1a0a;color:#4ade80;border:1px solid #1a4a1a}
+.fly-no{background:#1a0a0a;color:#e84040;border:1px solid #3a1a1a}
+
+.rprice{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--redlit);margin-top:auto;padding-top:10px;border-top:1px solid var(--border)}
+.rprice span{font-size:11px;color:var(--white3);font-family:'Sarabun',sans-serif;font-weight:400}
+.bbtn{width:100%;padding:9px;border-radius:9px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;margin-top:8px;letter-spacing:.3px}
+.bbtn:hover{filter:brightness(1.15)}
+.bbtn:active{transform:scale(.97)}
+.bbtn.no{background:#1a1a1a;color:#505050;border:1px solid #2a2a2a;cursor:not-allowed}
+.bbtn.got{background:#1a0e0e;color:var(--red);border:1px solid #3a1a1a;cursor:default}
+
+/* Topup */
+.topup-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:24px}
+.method-card{background:var(--r2);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;border-top-width:3px}
+.method-card:hover{transform:translateY(-2px);border-color:#4a1a1a}
+.method-card.active-method{border-color:var(--red)!important;background:#1a0e0e}
+.method-logo{font-size:28px;margin-bottom:10px}
+.method-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px}
+.method-desc{font-size:11px;color:var(--white3)}
+.topup-form{background:var(--r2);border:1px solid var(--borderl);border-radius:14px;padding:24px;max-width:520px}
+.form-input2{width:100%;background:var(--r3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--white);font-size:14px;font-family:'Sarabun',sans-serif;outline:none;margin-bottom:14px;transition:border .15s}
+.form-input2:focus{border-color:var(--red3)}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pkg{background:var(--r3);border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s}
+.pkg:hover{border-color:#4a1a1a}
+.pkg.sel{border-color:var(--red);background:#1a0e0e}
+.pkg .pamount{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--redlit)}
+.pkg .plabel{font-size:10px;color:var(--white3);margin-top:2px}
+.pkg .pbonus{font-size:10px;color:#4ade80;margin-top:2px}
+.submit-btn{width:100%;padding:12px;border-radius:8px;border:none;background:var(--red2);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;letter-spacing:.3px}
+.submit-btn:hover{background:var(--red)}
+.qr-box{background:var(--r3);border:1px solid var(--borderl);border-radius:14px;padding:24px;text-align:center;min-width:240px}
+.qr-img{width:170px;height:170px;background:white;border-radius:10px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.qr-img svg{width:150px;height:150px}
+.bank-badge{background:var(--r2);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--white2);display:inline-block;margin-bottom:10px}
+.qr-amt{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--redlit);margin-bottom:4px}
+.qr-sub{font-size:12px;color:var(--white3)}
+.copy-btn{background:var(--r2);border:1px solid var(--border);border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;color:var(--white2);cursor:pointer;font-family:'Sarabun',sans-serif;margin-top:12px;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.copy-btn:hover{border-color:var(--red3);color:var(--redlit)}
+.slip-note{font-size:11px;color:var(--white3);margin-top:12px;line-height:1.7;background:var(--r2);border-left:3px solid var(--red3);border-radius:0 8px 8px 0;padding:10px 14px}
+
+/* My rank */
+.my-box{background:var(--r2);border-radius:14px;border:1px solid var(--borderl);padding:20px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.my-icon{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:20px;font-weight:700}
+.my-info .label12{font-size:12px;color:var(--white3)}
+.my-info .rdname{font-family:'Cinzel',serif;font-size:22px;font-weight:700}
+.my-info .sub12{font-size:12px;color:var(--white3);margin-top:2px}
+.hist-list{display:flex;flex-direction:column;gap:8px}
+.hist-item{background:var(--r2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.hist-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hist-info{flex:1}
+.hist-name{font-size:13px;font-weight:600;color:var(--white)}
+.hist-date{font-size:11px;color:var(--white3)}
+.hist-amt{font-family:'Cinzel',serif;font-size:14px;font-weight:600}
+
+/* Discord Banner */
+.discord-banner{background:linear-gradient(135deg,#1e1f22,#2a2d31);border:1px solid #404249;border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:20px;cursor:pointer;transition:all .2s}
+.discord-banner:hover{border-color:#5865f2;transform:translateY(-2px);box-shadow:0 8px 24px #5865f220}
+.dc-icon{width:48px;height:48px;background:#5865f2;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.dc-info{flex:1}
+.dc-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
+.dc-sub{font-size:12px;color:#b9bbbe}
+.dc-join{background:#5865f2;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;white-space:nowrap}
+.dc-join:hover{background:#4752c4}
+
+/* Admin Panel */
+.admin-layout{display:flex;gap:0;min-height:calc(100vh - 120px)}
+.admin-sidebar{width:220px;background:var(--r1);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0}
+.admin-sidebar-title{font-size:10px;color:var(--white3);letter-spacing:2px;padding:0 16px;margin-bottom:8px;margin-top:12px}
+.admin-sidebar-title:first-child{margin-top:0}
+.admin-menu-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--white3);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.admin-menu-item:hover{color:var(--white);background:var(--r2)}
+.admin-menu-item.active{color:var(--gold);border-left-color:var(--gold);background:#1a1500}
+.admin-menu-item .menu-icon{font-size:15px;width:18px;text-align:center}
+.admin-content{flex:1;padding:24px;overflow:auto}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--r2);border:1px solid var(--border);border-radius:12px;padding:16px}
+.stat-card .slabel{font-size:11px;color:var(--white3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.stat-card .sval{font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--redlit)}
+.stat-card .ssub{font-size:11px;color:var(--white3);margin-top:2px}
+.pending-list{display:flex;flex-direction:column;gap:8px}
+.pending-item{background:var(--r2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pending-info{flex:1;min-width:120px}
+.pending-name{font-size:14px;font-weight:600;color:var(--white)}
+.pending-detail{font-size:11px;color:var(--white3);margin-top:2px}
+.pending-amt{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:var(--redlit);margin-right:10px}
+.pending-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-wait{background:#1a1400;color:#f0c040;border:1px solid #4a3a00}
+.badge-ok{background:#0a1a0a;color:#4ade80;border:1px solid #1a4a1a}
+.badge-fail{background:#1a0e0e;color:var(--redlit);border:1px solid var(--red3)}
+.action-row{display:flex;gap:6px}
+.a-btn{border-radius:6px;border:none;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s}
+.a-btn.approve{background:#1a3a1a;color:#4ade80;border:1px solid #2a5a2a}
+.a-btn.approve:hover{background:#1f4a1f}
+.a-btn.reject{background:#1a0e0e;color:var(--redlit);border:1px solid var(--red3)}
+.a-btn.reject:hover{background:#260f0f}
+.slip-thumb{width:40px;height:40px;background:var(--r3);border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer}
+.edit-section{background:var(--r2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.edit-section-title{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:var(--white);margin-bottom:16px}
+.edit-label{font-size:12px;color:var(--white3);margin-bottom:5px;letter-spacing:.3px;display:block}
+.edit-input{width:100%;background:var(--r3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--white);font-size:13px;font-family:'Sarabun',sans-serif;outline:none;transition:border .15s}
+.edit-input:focus{border-color:var(--red3)}
+.edit-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap}
+.edit-group{flex:1;min-width:120px}
+.save-btn{padding:8px 20px;border-radius:8px;border:none;background:var(--red2);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s}
+.save-btn:hover{background:var(--red)}
+.rank-edit-card{background:var(--r3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.rank-edit-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.rank-edit-badge{font-family:'Cinzel',serif;font-size:12px;font-weight:600;padding:3px 10px;border-radius:5px}
+.del-btn{padding:5px 10px;border-radius:6px;background:#1a0e0e;color:var(--redlit);border:1px solid var(--red3);font-size:11px;cursor:pointer;font-family:'Sarabun',sans-serif}
+.add-btn{width:100%;padding:10px;border-radius:8px;border:1px dashed var(--border);background:transparent;color:var(--white3);font-size:13px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;margin-top:8px}
+.add-btn:hover{border-color:var(--red3);color:var(--redlit)}
+.color-row{display:flex;gap:8px;align-items:center}
+.color-pick{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);cursor:pointer;padding:2px;background:var(--r3)}
+.perk-list{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.perk-row{display:flex;gap:6px}
+.perk-input{flex:1;background:var(--r3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--white);font-size:12px;font-family:'Sarabun',sans-serif;outline:none}
+.perk-del{width:28px;height:28px;border-radius:6px;border:none;background:#1a0e0e;color:var(--redlit);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.user-list{display:flex;flex-direction:column;gap:8px}
+.user-item{background:var(--r3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.user-av{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:14px;font-weight:700}
+.user-item-info{flex:1;min-width:100px}
+.user-item-name{font-size:13px;font-weight:600}
+.user-item-sub{font-size:11px;color:var(--white3)}
+.user-role-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-admin{background:#1a1400;color:var(--gold);border:1px solid #4a3a00}
+.badge-user{background:var(--r2);color:var(--white3);border:1px solid var(--border)}
+.toggle-role-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--r2);color:var(--white3);font-size:11px;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s}
+.toggle-role-btn:hover{border-color:var(--gold);color:var(--gold)}
+.banner-preview{background:var(--r3);border:1px solid var(--border);border-radius:10px;padding:30px 20px;text-align:center;margin-bottom:14px}
+.notice-box{background:var(--r3);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:var(--white3);margin-bottom:14px;line-height:1.7}
+
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--r2);border:1px solid var(--borderl);border-radius:16px;padding:28px;max-width:440px;width:90%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:16px}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--white3);font-size:22px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--white)}
+.confirm-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.confirm-label{font-size:12px;color:var(--white3)}
+.confirm-val{font-size:13px;font-weight:600;color:var(--white);text-align:right}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.big-price{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--redlit);text-align:center;margin:12px 0}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--r3);border:1px solid var(--red3);color:var(--redlit);padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;transform:translateY(80px);opacity:0;transition:all .3s;z-index:300;font-family:'Sarabun',sans-serif;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+.main-banner{text-align:center;padding:70px 20px;background:linear-gradient(180deg,#111114,#0a0a0a);border-bottom:1px solid #2a2a2a;}
+.main-banner h1{font-size:52px;letter-spacing:4px;font-family:'Cinzel',serif;}
+.main-banner p{color:#888;margin-top:10px;}
+.footer{margin-top:60px;padding:25px;text-align:center;color:#777;border-top:1px solid #222;}
+.footer a{color:#5865f2;text-decoration:none}.footer a:hover{text-decoration:underline}
+
+@media(max-width:768px){
+  .hero{padding:12px 16px}.container{padding:16px}.tabs{padding:0 12px}
+  .ranks-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .admin-sidebar{width:180px}.admin-content{padding:12px}
+  .main-banner h1{font-size:32px}
+}
+@media(max-width:600px){
+  .admin-layout{flex-direction:column}
+  .admin-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border)}
+  .limits-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen">
+  <div class="login-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">R</div>
+    <div class="login-title">TheZero Network</div>
+    <div class="login-sub">เข้าสู่ระบบเพื่อใช้งาน Store</div>
+
+    <div class="login-tabs">
+      <div class="ltab active" onclick="switchLoginTab('login')">🔑 เข้าสู่ระบบ</div>
+      <div class="ltab" onclick="switchLoginTab('register')">📝 สมัครสมาชิก</div>
+      <div class="ltab" onclick="switchLoginTab('admin')">🔐 Admin</div>
+    </div>
+
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-ok" id="loginOk"></div>
+
+    <!-- LOGIN -->
+    <div id="tabLogin">
+      <label class="form-label">ชื่อผู้ใช้ (Minecraft Username)</label>
+      <input type="text" id="inUsername" class="form-input" placeholder="เช่น Steve_TH" autocomplete="off">
+      <label class="form-label">รหัสผ่าน</label>
+      <input type="password" id="inPassword" class="form-input" placeholder="รหัสผ่านของคุณ">
+      <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+      <div class="login-hint">ทดสอบ: <b>user</b> / <b>1234</b></div>
+      <a href="https://discord.gg/SXWmKdV2cB" target="_blank" class="discord-link-login">
+        <div class="discord-icon">💬</div>
+        ติดต่อสอบถาม / รับ Support ผ่าน Discord
+      </a>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="tabRegister" style="display:none">
+      <label class="form-label">ชื่อผู้ใช้ (Minecraft Username)</label>
+      <input type="text" id="regUser" class="form-input" placeholder="ชื่อ Minecraft ของคุณ" autocomplete="off">
+      <label class="form-label">อีเมล (สำหรับติดต่อ)</label>
+      <input type="email" id="regEmail" class="form-input" placeholder="example@email.com">
+      <label class="form-label">รหัสผ่าน</label>
+      <input type="password" id="regPass" class="form-input" placeholder="อย่างน้อย 6 ตัวอักษร">
+      <label class="form-label">ยืนยันรหัสผ่าน</label>
+      <input type="password" id="regPass2" class="form-input" placeholder="กรอกรหัสผ่านอีกครั้ง">
+      <button class="login-btn" style="background:#1a5a1a" onclick="doRegister()">✅ สมัครสมาชิก</button>
+      <div class="login-hint">หลังสมัครแล้วสามารถเข้าสู่ระบบได้ทันที</div>
+    </div>
+
+    <!-- ADMIN -->
+    <div id="tabAdmin" style="display:none">
+      <label class="form-label">Admin Username</label>
+      <input type="text" id="inAdminUser" class="form-input" placeholder="admin" autocomplete="off">
+      <label class="form-label">Admin Password</label>
+      <input type="password" id="inAdminPass" class="form-input" placeholder="รหัสผ่าน Admin">
+      <button class="login-btn" style="background:#7a5a00;color:#f0c040" onclick="doAdminLogin()">🔐 เข้าสู่ระบบ Admin</button>
+      <div class="login-hint">ทดสอบ: <b>admin</b> / <b>admin1234</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp">
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="logo-box" id="siteLogo">R</div>
+    <div>
+      <div class="hero-title" id="siteTitle">TheZero</div>
+      <div class="hero-sub" id="siteSub">TheZero Network Store</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bal" id="heroBalBox">
+      <div class="blabel">ยอดเงินของคุณ</div>
+      <div class="bamt" id="userBalance">0 ฿</div>
+    </div>
+    <div class="user-badge">
+      <div class="user-avatar" id="userAvatar" style="background:#d42b2b;color:#fff">U</div>
+      <div>
+        <div class="user-name" id="userNameBadge">ผู้ใช้</div>
+        <div class="user-role" id="userRoleBadge">Member</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">ออกจากระบบ</button>
+  </div>
+</div>
+
+<div id="mainBanner" class="main-banner">
+  <h1 id="bannerTitle">THEZERO NETWORK</h1>
+  <p id="bannerSub">Premium Minecraft Experience</p>
+</div>
+
+<div class="tabs" id="mainTabs">
+  <div class="tab active" onclick="sw('shop')">🏪 ร้านค้า</div>
+  <div class="tab" onclick="sw('topup')">💳 เติมเงิน</div>
+  <div class="tab" onclick="sw('myrank')">👑 ยศของฉัน</div>
+  <div class="tab" onclick="sw('contact')">💬 ติดต่อ</div>
+</div>
+
+<div class="container" id="mainContainer">
+
+  <!-- SHOP -->
+  <div id="shopPage" class="page active">
+    <div class="sec-title">เลือกซื้อยศ — TheZero Network</div>
+    <div class="ranks-grid" id="ranksGrid"></div>
+  </div>
+
+  <!-- TOPUP -->
+  <div id="topupPage" class="page">
+    <div class="sec-title">เลือกช่องทางเติมเงิน</div>
+    <div class="topup-methods" id="methodGrid"></div>
+    <div id="topupFormArea"></div>
+  </div>
+
+  <!-- MY RANK -->
+  <div id="myrankPage" class="page">
+    <div id="myRankBox"></div>
+    <div class="sec-title">ประวัติธุรกรรม</div>
+    <div class="hist-list" id="historyList"></div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contactPage" class="page">
+    <div class="sec-title">ติดต่อสอบถาม</div>
+    <a href="https://discord.gg/SXWmKdV2cB" target="_blank" class="discord-banner">
+      <div class="dc-icon">💬</div>
+      <div class="dc-info">
+        <div class="dc-title">TheZero Network — Discord Server</div>
+        <div class="dc-sub">discord.gg/SXWmKdV2cB · สอบถาม / รายงานปัญหา / รับข่าวสาร</div>
+      </div>
+      <button class="dc-join">เข้า Server</button>
+    </a>
+    <div style="background:var(--r2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:12px">
+      <div style="font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin-bottom:14px">📋 ช่องทางการติดต่อ</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--white2)">
+        <div>💬 <b>Discord:</b> <a href="https://discord.gg/SXWmKdV2cB" target="_blank" style="color:#5865f2">discord.gg/SXWmKdV2cB</a></div>
+        <div>🛒 <b>ปัญหาการซื้อยศ:</b> แจ้งใน #support ใน Discord</div>
+        <div>💳 <b>ปัญหาเติมเงิน:</b> แนบสลิปใน #topup-support</div>
+        <div>⏰ <b>ทีมงานตอบภายใน:</b> 5–30 นาที (ในเวลาทำการ)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ADMIN AREA -->
+<div id="adminArea" style="display:none">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-title">OVERVIEW</div>
+      <div class="admin-menu-item active" onclick="adminNav('dashboard')"><span class="menu-icon">📊</span> Dashboard</div>
+      <div class="admin-menu-item" onclick="adminNav('slips')"><span class="menu-icon">🧾</span> ตรวจสลิป</div>
+      <div class="admin-sidebar-title">แก้ไขเว็บ</div>
+      <div class="admin-menu-item" onclick="adminNav('editSite')"><span class="menu-icon">🖥️</span> ข้อมูลเว็บไซต์</div>
+      <div class="admin-menu-item" onclick="adminNav('editRanks')"><span class="menu-icon">👑</span> จัดการยศ</div>
+      <div class="admin-menu-item" onclick="adminNav('editPayment')"><span class="menu-icon">💳</span> ช่องทางชำระเงิน</div>
+      <div class="admin-menu-item" onclick="adminNav('editPackages')"><span class="menu-icon">💰</span> แพ็กเกจเติมเงิน</div>
+      <div class="admin-sidebar-title">จัดการ</div>
+      <div class="admin-menu-item" onclick="adminNav('users')"><span class="menu-icon">👥</span> ผู้ใช้งาน</div>
+    </div>
+    <div class="admin-content">
+      <div id="adminDashboard" class="admin-sub"></div>
+      <div id="adminSlips" class="admin-sub" style="display:none"></div>
+      <div id="adminEditSite" class="admin-sub" style="display:none"></div>
+      <div id="adminEditRanks" class="admin-sub" style="display:none"></div>
+      <div id="adminEditPayment" class="admin-sub" style="display:none"></div>
+      <div id="adminEditPackages" class="admin-sub" style="display:none"></div>
+      <div id="adminUsers" class="admin-sub" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" id="mainFooter">
+  <span id="footerText">TheZero Network © 2026</span> ·
+  <a href="https://discord.gg/SXWmKdV2cB" target="_blank">Discord</a>
+</footer>
+
+</div><!-- /mainApp -->
+
+<!-- BUY MODAL -->
+<div class="modal-bg" id="buyModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('buyModal')">✕</button>
+    <div class="modal-title">ยืนยันการซื้อยศ</div>
+    <div class="confirm-row">
+      <div class="confirm-label">ยศที่เลือก</div><div class="confirm-val" id="mRankName">—</div>
+      <div class="confirm-label">ยอดเงินปัจจุบัน</div><div class="confirm-val" id="mBalance">—</div>
+      <div class="confirm-label">ราคา</div><div class="confirm-val" id="mPrice">—</div>
+    </div>
+    <hr class="divider">
+    <div class="big-price" id="mBigPrice">— ฿</div>
+    <div style="font-size:12px;color:var(--white3);text-align:center;margin-bottom:16px">เงินจะถูกหักจากยอดคงเหลือของคุณ</div>
+    <button class="submit-btn" id="mConfirmBtn">✔ ยืนยันซื้อเลย</button>
+  </div>
+</div>
+
+<!-- SLIP MODAL -->
+<div class="modal-bg" id="slipModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('slipModal')">✕</button>
+    <div class="modal-title">ดูสลิปการโอน</div>
+    <div style="background:var(--r3);border-radius:10px;padding:20px;text-align:center;margin-bottom:16px">
+      <div style="font-size:48px;margin-bottom:10px">🧾</div>
+      <div style="font-size:13px;color:var(--white3)">สลิปจาก</div>
+      <div id="slipFrom" style="font-size:16px;font-weight:600;color:var(--white);margin-top:4px">—</div>
+      <div id="slipAmt" style="font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--redlit);margin-top:8px">— ฿</div>
+      <div id="slipTime" style="font-size:11px;color:var(--white3);margin-top:4px">—</div>
+    </div>
+    <div class="action-row" style="gap:10px">
+      <button class="a-btn approve" style="flex:1;padding:10px" id="slipApproveBtn">✔ อนุมัติ</button>
+      <button class="a-btn reject" style="flex:1;padding:10px" id="slipRejectBtn">✕ ปฏิเสธ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========== DATA ========== */
+let RANKS = [
+  {
+    id:'vip', name:'VIP', badge:'⚡ VIP', color:'#60a0ff', bg:'#0a1020',
+    price:200,
+    desc:'ยศเริ่มต้น สิทธิ์พื้นฐานสำหรับผู้สนับสนุนเซิร์ฟ',
+    commands:['/Craft — เปิดโต๊ะคราฟต์ไอเทม'],
+    limits:[
+      {k:'เซฟบ้าน',v:'3 จุด'},{k:'ขายตลาดโลก',v:'15 ช่อง'},
+      {k:'รับซื้อไอเทม',v:'15 ช่อง'},{k:'กล่องขายของ',v:'15 ช่อง'},
+      {k:'วันตลาดโลก',v:'8 วัน'},{k:'ความทนอุปกรณ์',v:'×4'},
+      {k:'ความทนเกราะ',v:'×6'},
+    ],
+    fly:false,
+  },
+  {
+    id:'pro', name:'PRO', badge:'🔥 PRO', color:'#f0a030', bg:'#1a0e00',
+    price:500,
+    desc:'ยศระดับกลาง Anvil ปลดล็อค สิทธิ์เพิ่มขึ้นทุกด้าน',
+    commands:['/Craft — เปิดโต๊ะคราฟต์ไอเทม','/Anvil — เปิดทั่งตีอุปกรณ์'],
+    limits:[
+      {k:'เซฟบ้าน',v:'5 จุด'},{k:'ขายตลาดโลก',v:'20 ช่อง'},
+      {k:'รับซื้อไอเทม',v:'20 ช่อง'},{k:'กล่องขายของ',v:'20 ช่อง'},
+      {k:'วันตลาดโลก',v:'10 วัน'},{k:'ความทนอุปกรณ์',v:'×5'},
+      {k:'ความทนเกราะ',v:'×7'},
+    ],
+    fly:false,
+  },
+  {
+    id:'mvp', name:'MVP', badge:'💎 MVP', color:'#60c8f0', bg:'#0a1620',
+    price:1200,
+    desc:'ยศยอดนิยม Ender Chest ปลดล็อค สำหรับนักเล่นตัวจริง',
+    commands:['/Craft — เปิดโต๊ะคราฟต์ไอเทม','/Anvil — เปิดทั่งตีอุปกรณ์','/Ender — เปิดหีบเอนเดอร์'],
+    limits:[
+      {k:'เซฟบ้าน',v:'10 จุด'},{k:'ขายตลาดโลก',v:'25 ช่อง'},
+      {k:'รับซื้อไอเทม',v:'25 ช่อง'},{k:'กล่องขายของ',v:'25 ช่อง'},
+      {k:'วันตลาดโลก',v:'12 วัน'},{k:'ความทนอุปกรณ์',v:'×6'},
+      {k:'ความทนเกราะ',v:'×8'},
+    ],
+    fly:false,
+  },
+  {
+    id:'elite', name:'ELITE', badge:'🌟 ELITE', color:'#50d080', bg:'#0a1a10',
+    price:2000,
+    desc:'ยศระดับสูง บินในเมืองได้! Loom ปลดล็อค',
+    commands:['/Craft — เปิดโต๊ะคราฟต์ไอเทม','/Anvil — เปิดทั่งตีอุปกรณ์','/Ender — เปิดหีบเอนเดอร์','/Loom — เปิดเครื่องทอผ้า'],
+    limits:[
+      {k:'เซฟบ้าน',v:'15 จุด'},{k:'ขายตลาดโลก',v:'30 ช่อง'},
+      {k:'รับซื้อไอเทม',v:'30 ช่อง'},{k:'กล่องขายของ',v:'30 ช่อง'},
+      {k:'วันตลาดโลก',v:'14 วัน'},{k:'ความทนอุปกรณ์',v:'×7'},
+      {k:'ความทนเกราะ',v:'×9'},
+    ],
+    fly:true,
+  },
+  {
+    id:'legends', name:'LEGENDS', badge:'👑 LEGENDS', color:'#f0c040', bg:'#1a1000',
+    price:3500,
+    desc:'ยศสูงสุด ครบทุก Command บินได้ สิทธิ์สูงสุดทุกอย่าง',
+    commands:[
+      '/Craft — เปิดโต๊ะคราฟต์ไอเทม','/Anvil — เปิดทั่งตีอุปกรณ์',
+      '/Ender — เปิดหีบเอนเดอร์','/Loom — เปิดเครื่องทอผ้า',
+      '/Cartographytable — เปิดโต๊ะแผนที่','/Grindstone — เปิดเครื่องล้างมนต์',
+    ],
+    limits:[
+      {k:'เซฟบ้าน',v:'25 จุด'},{k:'ขายตลาดโลก',v:'35 ช่อง'},
+      {k:'รับซื้อไอเทม',v:'35 ช่อง'},{k:'กล่องขายของ',v:'35 ช่อง'},
+      {k:'วันตลาดโลก',v:'20 วัน'},{k:'ความทนอุปกรณ์',v:'×10'},
+      {k:'ความทนเกราะ',v:'×10'},
+    ],
+    fly:true,
+  },
+];
+
+let METHODS=[
+  {id:'true',name:'TrueMoney Wallet',desc:'อังเปา / โอนตรง',logo:'💚',topColor:'#16a34a',phone:'081-234-5678'},
+  {id:'qr_kbank',name:'QR พร้อมเพย์ — กสิกร',desc:'สแกนจ่ายผ่าน KBANK',logo:'🟢',topColor:'#166030',phone:'081-234-5678'},
+  {id:'qr_scb',name:'QR พร้อมเพย์ — SCB',desc:'สแกนจ่ายผ่าน SCB',logo:'💜',topColor:'#5b21b6',phone:'081-234-5678'},
+  {id:'qr_ktb',name:'QR พร้อมเพย์ — กรุงไทย',desc:'สแกนจ่ายผ่าน KTB',logo:'🔵',topColor:'#1d4ed8',phone:'081-234-5678'},
+];
+let PACKAGES=[
+  {amount:100,label:'100 ฿',bonus:''},
+  {amount:300,label:'300 ฿',bonus:'+20 ฿ ฟรี'},
+  {amount:500,label:'500 ฿',bonus:'+50 ฿ ฟรี'},
+  {amount:1000,label:'1,000 ฿',bonus:'+120 ฿ ฟรี'},
+  {amount:2000,label:'2,000 ฿',bonus:'+300 ฿ ฟรี'},
+  {amount:5000,label:'5,000 ฿',bonus:'+800 ฿ ฟรี'},
+];
+let SITE={
+  title:'TheZero',sub:'TheZero Network Store',
+  bannerTitle:'THEZERO NETWORK',bannerSub:'Premium Minecraft Experience',
+  footer:'TheZero Network © 2026',logo:'R',
+  discord:'https://discord.gg/SXWmKdV2cB',notice:'',
+};
+let USERS=[
+  {username:'admin',password:'admin1234',role:'admin',email:'',balance:0,owned:[],history:[]},
+  {username:'user',password:'1234',role:'user',email:'user@test.com',balance:2500,owned:['vip'],history:[
+    {type:'topup',label:'เติมเงิน TrueMoney',amount:2500,date:'2 มิ.ย. 2026'},
+    {type:'buy',label:'ซื้อยศ VIP',amount:-200,date:'1 มิ.ย. 2026'},
+  ]},
+];
+let pendingTx=[
+  {id:'TX001',user:'Steve_TH',method:'TrueMoney',amount:500,date:'04/06/2026 10:32',status:'wait'},
+  {id:'TX002',user:'Notch99',method:'QR กสิกร',amount:1000,date:'04/06/2026 11:05',status:'wait'},
+  {id:'TX003',user:'Alex_MC',method:'QR SCB',amount:300,date:'04/06/2026 11:48',status:'ok'},
+];
+
+let currentUser=null;
+let selMethod=null,selPkg=null,pendingBuyId=null;
+let loginTabActive='login';
+
+/* ========== LOGIN ========== */
+function switchLoginTab(t){
+  loginTabActive=t;
+  document.querySelectorAll('.ltab').forEach((el,i)=>{
+    const tabs=['login','register','admin'];
+    el.classList.toggle('active',tabs[i]===t);
+  });
+  document.getElementById('tabLogin').style.display=t==='login'?'block':'none';
+  document.getElementById('tabRegister').style.display=t==='register'?'block':'none';
+  document.getElementById('tabAdmin').style.display=t==='admin'?'block':'none';
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginOk').style.display='none';
+}
+
+function showErr(msg){const e=document.getElementById('loginErr');e.textContent=msg;e.style.display='block';document.getElementById('loginOk').style.display='none';}
+function showOk(msg){const e=document.getElementById('loginOk');e.textContent=msg;e.style.display='block';document.getElementById('loginErr').style.display='none';}
+
+function doLogin(){
+  const u=document.getElementById('inUsername').value.trim();
+  const p=document.getElementById('inPassword').value;
+  if(!u||!p){showErr('❌ กรุณากรอกข้อมูลให้ครบ');return;}
+  const found=USERS.find(x=>x.username===u&&x.password===p&&x.role==='user');
+  if(!found){showErr('❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');return;}
+  loginAs(found);
+}
+
+function doRegister(){
+  const u=document.getElementById('regUser').value.trim();
+  const em=document.getElementById('regEmail').value.trim();
+  const p=document.getElementById('regPass').value;
+  const p2=document.getElementById('regPass2').value;
+  if(!u||!p||!p2){showErr('❌ กรุณากรอกข้อมูลให้ครบ');return;}
+  if(u.length<3){showErr('❌ ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร');return;}
+  if(p.length<6){showErr('❌ รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');return;}
+  if(p!==p2){showErr('❌ รหัสผ่านไม่ตรงกัน');return;}
+  if(USERS.find(x=>x.username===u)){showErr('❌ ชื่อผู้ใช้นี้ถูกใช้แล้ว กรุณาเลือกชื่อใหม่');return;}
+  const newUser={username:u,password:p,role:'user',email:em,balance:0,owned:[],history:[]};
+  USERS.push(newUser);
+  showOk('✅ สมัครสมาชิกสำเร็จ! กำลังเข้าสู่ระบบ...');
+  setTimeout(()=>loginAs(newUser),1000);
+}
+
+function doAdminLogin(){
+  const u=document.getElementById('inAdminUser').value.trim();
+  const p=document.getElementById('inAdminPass').value;
+  const found=USERS.find(x=>x.username===u&&x.password===p&&x.role==='admin');
+  if(!found){showErr('❌ ข้อมูล Admin ไม่ถูกต้อง');return;}
+  loginAs(found);
+}
+
+function loginAs(user){
+  currentUser=user;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  initApp();
+}
+
+function doLogout(){
+  currentUser=null;
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('mainApp').style.display='none';
+  ['inUsername','inPassword','inAdminUser','inAdminPass','regUser','regEmail','regPass','regPass2']
+    .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginOk').style.display='none';
+  // remove admin tab if exists
+  const at=document.getElementById('adminTab');if(at)at.remove();
+}
+
+document.getElementById('inPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('inAdminPass').addEventListener('keydown',e=>{if(e.key==='Enter')doAdminLogin();});
+
+/* ========== INIT ========== */
+function initApp(){
+  applySiteConfig();
+  if(currentUser.role==='admin'){
+    if(!document.getElementById('adminTab')){
+      const t=document.createElement('div');
+      t.className='tab admin-tab';t.id='adminTab';t.textContent='🔐 Admin';
+      t.onclick=()=>sw('admin');
+      document.getElementById('mainTabs').appendChild(t);
+    }
+  }
+  updBal();
+  const av=document.getElementById('userAvatar');
+  av.textContent=currentUser.username[0].toUpperCase();
+  av.style.background=currentUser.role==='admin'?'#7a5a00':'#d42b2b';
+  av.style.color=currentUser.role==='admin'?'#f0c040':'#fff';
+  document.getElementById('userNameBadge').textContent=currentUser.username;
+  document.getElementById('userRoleBadge').textContent=currentUser.role==='admin'?'⭐ Admin':'Member';
+  document.getElementById('heroBalBox').style.display=currentUser.role==='admin'?'none':'block';
+  sw('shop');
+}
+function applySiteConfig(){
+  document.getElementById('siteTitle').textContent=SITE.title;
+  document.getElementById('siteSub').textContent=SITE.sub;
+  document.getElementById('bannerTitle').textContent=SITE.bannerTitle;
+  document.getElementById('bannerSub').textContent=SITE.bannerSub;
+  document.getElementById('footerText').textContent=SITE.footer;
+  document.getElementById('siteLogo').textContent=SITE.logo;
+  document.title=SITE.title+' — '+SITE.sub;
+}
+
+/* ========== NAV ========== */
+function sw(tab){
+  const pages=['shop','topup','myrank','contact'];
+  pages.forEach(t=>{const p=document.getElementById(t+'Page');if(p)p.classList.toggle('active',t===tab);});
+  document.querySelectorAll('.tab').forEach(el=>{
+    if(el.id==='adminTab'){el.classList.toggle('active',tab==='admin');return;}
+    const map={'ร้านค้า':'shop','เติมเงิน':'topup','ยศของฉัน':'myrank','ติดต่อ':'contact'};
+    const found=Object.keys(map).find(k=>el.textContent.includes(k));
+    if(found)el.classList.toggle('active',map[found]===tab);
+  });
+  const isAdmin=tab==='admin';
+  document.getElementById('mainContainer').style.display=isAdmin?'none':'block';
+  document.getElementById('adminArea').style.display=isAdmin?'block':'none';
+  document.getElementById('mainBanner').style.display=isAdmin?'none':'block';
+  if(tab==='topup'){selMethod=null;selPkg=null;renderMethods();document.getElementById('topupFormArea').innerHTML='';}
+  if(tab==='myrank')renderMyRank();
+  if(tab==='admin')adminNav('dashboard');
+  if(tab==='shop')renderShop();
+}
+
+/* ========== UTILS ========== */
+function fmt(n){return parseInt(n).toLocaleString('th-TH')}
+function updBal(){if(currentUser)document.getElementById('userBalance').textContent=fmt(currentUser.balance)+' ฿';}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ========== SHOP ========== */
+function renderShop(){
+  const owned=currentUser?currentUser.owned:[];
+  const balance=currentUser?currentUser.balance:0;
+  document.getElementById('ranksGrid').innerHTML=RANKS.map(r=>{
+    const isO=owned.includes(r.id),canB=balance>=r.price;
+    const cmdHtml=r.commands.map(c=>`<div class="cmd-item">${c}</div>`).join('');
+    const limHtml=r.limits.map(l=>`<div class="limit-item"><div class="limit-key">${l.k}</div><div class="limit-val" style="color:${r.color}">${l.v}</div></div>`).join('');
+    const flyHtml=r.fly
+      ?`<div class="fly-badge fly-yes">✈️ บินในเมืองศูนย์กลาง: ได้</div>`
+      :`<div class="fly-badge fly-no">🚫 บินในเมืองศูนย์กลาง: ไม่ได้</div>`;
+    let btn=isO
+      ?`<button class="bbtn got" disabled>✔ มีแล้ว</button>`
+      :canB
+        ?`<button class="bbtn" style="background:${r.bg};color:${r.color};border:1px solid ${r.color}50" onclick="openBuyModal('${r.id}')">ซื้อเลย ➜</button>`
+        :`<button class="bbtn no" disabled>เงินไม่พอ</button>`;
+    return `<div class="rc${isO?' owned':''}">
+      <div class="stripe" style="background:linear-gradient(90deg,${r.color},${r.color}88)"></div>
+      <div class="rc-body">
+        <div class="rbadge" style="background:${r.bg};color:${r.color};border:1px solid ${r.color}40">${r.badge}</div>
+        <div class="rname" style="color:${r.color}">${r.name}</div>
+        <div class="rdesc">${r.desc}</div>
+        <div class="cmd-section">
+          <div class="cmd-label">🔧 Commands</div>
+          <div class="cmd-list">${cmdHtml}</div>
+        </div>
+        <div class="cmd-label">📊 Limits</div>
+        <div class="limits-grid">${limHtml}</div>
+        ${flyHtml}
+        <div class="rprice">${fmt(r.price)} <span>฿</span>${btn}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openBuyModal(id){
+  const r=RANKS.find(x=>x.id===id);if(!r)return;
+  pendingBuyId=id;
+  document.getElementById('mRankName').textContent=r.badge+' '+r.name;
+  document.getElementById('mBalance').textContent=fmt(currentUser.balance)+' ฿';
+  document.getElementById('mPrice').textContent=fmt(r.price)+' ฿';
+  document.getElementById('mBigPrice').textContent=fmt(r.price)+' ฿';
+  document.getElementById('mConfirmBtn').onclick=()=>confirmBuy();
+  document.getElementById('buyModal').classList.add('open');
+}
+function confirmBuy(){
+  const r=RANKS.find(x=>x.id===pendingBuyId);
+  if(!r||currentUser.owned.includes(r.id)||currentUser.balance<r.price)return;
+  currentUser.balance-=r.price;currentUser.owned.push(r.id);
+  currentUser.history.unshift({type:'buy',label:'ซื้อยศ '+r.name,amount:-r.price,date:new Date().toLocaleDateString('th-TH')});
+  updBal();renderShop();closeModal('buyModal');
+  showToast('✔ ซื้อยศ '+r.name+' สำเร็จ!');
+}
+
+/* ========== TOPUP ========== */
+function renderMethods(){
+  document.getElementById('methodGrid').innerHTML=METHODS.map(m=>`
+    <div class="method-card${selMethod===m.id?' active-method':''}" style="border-top-color:${m.topColor}" onclick="selectMethod('${m.id}')">
+      <div class="method-logo">${m.logo}</div>
+      <div class="method-name">${m.name}</div>
+      <div class="method-desc">${m.desc}</div>
+    </div>`).join('');
+}
+function selectMethod(id){selMethod=id;selPkg=null;renderMethods();renderTopupForm();}
+function selectPkg(i){
+  selPkg=i;
+  document.querySelectorAll('.pkg').forEach((el,j)=>el.classList.toggle('sel',i===j));
+  const ca=document.getElementById('customAmt');if(ca)ca.value='';
+  const qa=document.getElementById('qrAmt');if(qa)qa.textContent=fmt(PACKAGES[i].amount)+' ฿';
+}
+function renderTopupForm(){
+  const m=METHODS.find(x=>x.id===selMethod);
+  if(!m){document.getElementById('topupFormArea').innerHTML='';return;}
+  const pkgHtml=PACKAGES.map((p,i)=>`
+    <div class="pkg${selPkg===i?' sel':''}" onclick="selectPkg(${i})">
+      <div class="pamount">${p.label}</div><div class="plabel">เติมเงิน</div>
+      ${p.bonus?`<div class="pbonus">${p.bonus}</div>`:''}
+    </div>`).join('');
+  const BANK={qr_kbank:{name:'กสิกรไทย',col:'#1a7a3a'},qr_scb:{name:'ไทยพาณิชย์',col:'#7c3aed'},qr_ktb:{name:'กรุงไทย',col:'#2563eb'}};
+  if(m.id==='true'){
+    document.getElementById('topupFormArea').innerHTML=`
+      <div class="topup-form">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <div style="width:38px;height:38px;background:#14532d;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px">💚</div>
+          <div><div style="font-size:14px;font-weight:600">TrueMoney Wallet</div><div style="font-size:11px;color:var(--white3)">โอนตรงหรือส่งอังเปา</div></div>
+        </div>
+        <div class="form-label">เบอร์ TrueMoney ปลายทาง</div>
+        <div style="background:var(--r3);border:1px solid var(--red3);border-radius:8px;padding:11px 16px;font-size:16px;font-weight:600;letter-spacing:2px;margin-bottom:14px">${m.phone}</div>
+        <div class="form-label">เลือกจำนวนเงิน</div>
+        <div class="pkg-grid">${pkgHtml}</div>
+        <div class="form-label">หรือกรอกจำนวนเอง (฿)</div>
+        <input type="number" id="customAmt" class="form-input2" placeholder="ขั้นต่ำ 20 ฿" min="20" oninput="selPkg=null;document.querySelectorAll('.pkg').forEach(e=>e.classList.remove('sel'))">
+        <button class="submit-btn" onclick="openTopupConfirm()">✔ ยืนยันเติมเงิน</button>
+        <div class="slip-note">หลังโอนแนบสลิปให้ Admin ใน <a href="https://discord.gg/SXWmKdV2cB" target="_blank" style="color:#5865f2">Discord</a><br>เงินจะเข้าภายใน 5–15 นาที</div>
+      </div>`;
+  } else {
+    const bi=BANK[selMethod]||{name:'',col:'#888'};
+    document.getElementById('topupFormArea').innerHTML=`
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+        <div class="topup-form" style="flex:1;min-width:220px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+            <div style="width:38px;height:38px;background:${bi.col}22;border:1px solid ${bi.col}50;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px">${m.logo}</div>
+            <div><div style="font-size:14px;font-weight:600">QR พร้อมเพย์ — ธนาคาร${bi.name}</div><div style="font-size:11px;color:var(--white3)">สแกนโอนผ่าน Mobile Banking</div></div>
+          </div>
+          <div class="form-label">เลือกจำนวนเงิน</div>
+          <div class="pkg-grid">${pkgHtml}</div>
+          <div class="form-label">หรือกรอกเอง (฿)</div>
+          <input type="number" id="customAmt" class="form-input2" placeholder="ขั้นต่ำ 20 ฿" min="20"
+            oninput="selPkg=null;document.querySelectorAll('.pkg').forEach(e=>e.classList.remove('sel'));const v=parseInt(this.value||500);const qa=document.getElementById('qrAmt');if(qa)qa.textContent=v.toLocaleString('th-TH')+' ฿'">
+          <button class="submit-btn" onclick="openTopupConfirm()">✔ ยืนยันและดู QR Code</button>
+        </div>
+        <div class="qr-box">
+          <div style="font-size:12px;color:var(--white3);margin-bottom:12px">สแกนเพื่อชำระเงิน</div>
+          <div class="qr-img">${makeQR()}</div>
+          <div class="bank-badge" style="border-color:${bi.col}60;color:${bi.col}">ธนาคาร${bi.name}</div>
+          <div class="qr-amt" id="qrAmt">${fmt(selPkg!==null?PACKAGES[selPkg].amount:500)} ฿</div>
+          <div class="qr-sub">พร้อมเพย์ ${m.phone}</div>
+          <button class="copy-btn" onclick="showToast('✔ คัดลอกเบอร์แล้ว!')">📋 คัดลอกเบอร์</button>
+          <div class="slip-note">ส่งสลิปให้ Admin ใน <a href="https://discord.gg/SXWmKdV2cB" target="_blank" style="color:#5865f2">Discord</a><br>เงินเข้าภายใน 5–15 นาที</div>
+        </div>
+      </div>`;
+  }
+}
+function makeQR(){
+  const pat=[[1,1,1,1,1,1,1],[1,0,0,0,0,0,1],[1,0,1,1,1,0,1],[1,0,1,1,1,0,1],[1,0,1,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]];
+  const corner=(ox,oy)=>pat.map((row,r)=>row.map((v,c)=>v?`<rect x="${c*8+ox}" y="${r*8+oy}" width="8" height="8" fill="#111"/>`:'')).join('');
+  const dots=Array.from({length:40},(_,i)=>{const x=Math.floor(i/5)*10+20,y=(i%5)*10+20;return Math.random()>.4?`<rect x="${x+1}" y="${y+1}" width="7" height="7" rx="1" fill="#111"/>`:''}).join('');
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" fill="white"/>${corner(6,6)}${corner(70,6)}${corner(6,70)}${dots}<rect x="50" y="50" width="20" height="20" rx="3" fill="#d42b2b"/></svg>`;
+}
+function openTopupConfirm(){
+  const ca=document.getElementById('customAmt');
+  let amt=selPkg!==null?PACKAGES[selPkg].amount:(ca&&ca.value?parseInt(ca.value):0);
+  if(!amt||amt<20){showToast('❌ กรุณาเลือกหรือกรอกจำนวนเงิน');return;}
+  const bonus=selPkg!==null?(PACKAGES[selPkg].bonus?parseInt(PACKAGES[selPkg].bonus.replace(/[^0-9]/g,'')):0):0;
+  const total=amt+bonus;
+  const mn=METHODS.find(x=>x.id===selMethod);
+  const txId='TX'+String(Date.now()).slice(-4);
+  pendingTx.unshift({id:txId,user:currentUser.username,method:mn.name,amount:total,date:new Date().toLocaleString('th-TH'),status:'wait'});
+  currentUser.balance+=total;
+  currentUser.history.unshift({type:'topup',label:'เติมเงิน '+mn.name,amount:total,date:new Date().toLocaleDateString('th-TH')});
+  updBal();renderShop();
+  showToast('💰 เติมเงิน '+fmt(total)+' ฿ สำเร็จ! (รอ Admin ยืนยัน)');
+}
+
+/* ========== MY RANK ========== */
+function renderMyRank(){
+  const last=[...currentUser.owned].reverse().map(id=>RANKS.find(r=>r.id===id)).filter(Boolean)[0];
+  const box=document.getElementById('myRankBox');
+  if(last)box.innerHTML=`<div class="my-box">
+    <div class="my-icon" style="background:${last.bg};color:${last.color}">${last.badge.split(' ')[0]}</div>
+    <div class="my-info">
+      <div class="label12">ยศปัจจุบันของคุณ</div>
+      <div class="rdname" style="color:${last.color}">${last.badge} ${last.name}</div>
+      <div class="sub12">รวม ${currentUser.owned.length} ยศ · ยอดเงิน ${fmt(currentUser.balance)} ฿</div>
+    </div></div>`;
+  else box.innerHTML=`<div class="my-box"><div style="color:var(--white3);font-size:13px">ยังไม่มียศ ไปเลือกซื้อได้เลย!</div></div>`;
+  document.getElementById('historyList').innerHTML=currentUser.history.map(h=>{
+    const plus=h.amount>0;
+    return `<div class="hist-item">
+      <div class="hist-icon" style="background:${plus?'#0a1a0a':'#1a0e0e'}">${h.type==='topup'?'💳':'🛒'}</div>
+      <div class="hist-info"><div class="hist-name">${h.label}</div><div class="hist-date">${h.date}</div></div>
+      <div class="hist-amt" style="color:${plus?'#4ade80':'var(--redlit)'}">${plus?'+':''}${fmt(h.amount)} ฿</div>
+    </div>`;
+  }).join('')||'<div style="color:var(--white3);text-align:center;padding:20px">ยังไม่มีประวัติ</div>';
+}
+
+/* ========== ADMIN ========== */
+function adminNav(panel){
+  document.querySelectorAll('.admin-menu-item').forEach(el=>el.classList.remove('active'));
+  const labels={dashboard:'Dashboard',slips:'ตรวจสลิป',editSite:'ข้อมูลเว็บไซต์',editRanks:'จัดการยศ',editPayment:'ช่องทางชำระเงิน',editPackages:'แพ็กเกจเติมเงิน',users:'ผู้ใช้งาน'};
+  document.querySelectorAll('.admin-menu-item').forEach(el=>{if(el.textContent.includes(labels[panel]))el.classList.add('active');});
+  document.querySelectorAll('.admin-sub').forEach(el=>el.style.display='none');
+  const cap=panel.charAt(0).toUpperCase()+panel.slice(1);
+  const t=document.getElementById('admin'+cap);if(t)t.style.display='block';
+  ({dashboard:renderAdminDash,slips:renderSlips,editSite:renderEditSite,editRanks:renderEditRanks,editPayment:renderEditPayment,editPackages:renderEditPackages,users:renderAdminUsers})[panel]?.();
+}
+
+function renderAdminDash(){
+  const totalRev=pendingTx.filter(t=>t.status==='ok').reduce((s,t)=>s+t.amount,0);
+  const waiting=pendingTx.filter(t=>t.status==='wait').length;
+  document.getElementById('adminDashboard').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">📊 Admin Dashboard</div>
+    <div class="admin-grid">
+      <div class="stat-card"><div class="slabel">รายได้ทั้งหมด</div><div class="sval">${fmt(totalRev)} ฿</div><div class="ssub">ยอดที่อนุมัติแล้ว</div></div>
+      <div class="stat-card"><div class="slabel">รอตรวจสลิป</div><div class="sval" style="color:#f0c040">${waiting}</div><div class="ssub">รายการ</div></div>
+      <div class="stat-card"><div class="slabel">ผู้ใช้งาน</div><div class="sval">${USERS.filter(u=>u.role==='user').length}</div><div class="ssub">คน</div></div>
+      <div class="stat-card"><div class="slabel">ยศที่จำหน่าย</div><div class="sval" style="color:#60c8f0">${RANKS.length}</div><div class="ssub">ยศ</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--white3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">รายการล่าสุด</div>
+    ${pendingTx.slice(0,5).map(tx=>`<div class="pending-item" style="margin-bottom:8px">
+      <div class="slip-thumb">🧾</div>
+      <div class="pending-info"><div class="pending-name">${tx.user}</div><div class="pending-detail">${tx.id} · ${tx.method} · ${tx.date}</div></div>
+      <div class="pending-amt">${fmt(tx.amount)} ฿</div>
+      <span class="pending-badge ${tx.status==='wait'?'badge-wait':tx.status==='ok'?'badge-ok':'badge-fail'}">${tx.status==='wait'?'รอตรวจ':tx.status==='ok'?'อนุมัติแล้ว':'ปฏิเสธ'}</span>
+    </div>`).join('')}`;
+}
+
+function renderSlips(){
+  document.getElementById('adminSlips').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">🧾 ตรวจสลิปการโอน</div>
+    <div class="pending-list">${pendingTx.map((tx,i)=>{
+      const bc=tx.status==='wait'?'badge-wait':tx.status==='ok'?'badge-ok':'badge-fail';
+      const bt=tx.status==='wait'?'รอตรวจ':tx.status==='ok'?'อนุมัติแล้ว':'ปฏิเสธ';
+      const actions=tx.status==='wait'?`<div class="action-row">
+        <button class="a-btn approve" onclick="approveTx(${i})">✔ อนุมัติ</button>
+        <button class="a-btn reject" onclick="rejectTx(${i})">✕ ปฏิเสธ</button>
+        <button class="a-btn" style="background:var(--r3);color:var(--white2);border:1px solid var(--border)" onclick="viewSlip(${i})">👁 ดู</button>
+      </div>`:'';
+      return `<div class="pending-item"><div class="slip-thumb" onclick="viewSlip(${i})">🧾</div>
+        <div class="pending-info"><div class="pending-name">${tx.user}</div><div class="pending-detail">${tx.id} · ${tx.method} · ${tx.date}</div></div>
+        <div class="pending-amt">${fmt(tx.amount)} ฿</div>
+        <span class="pending-badge ${bc}">${bt}</span>${actions}</div>`;
+    }).join('')||'<div style="color:var(--white3);text-align:center;padding:20px">ไม่มีรายการ</div>'}</div>`;
+}
+function approveTx(i){pendingTx[i].status='ok';renderSlips();showToast('✔ อนุมัติ '+pendingTx[i].id);}
+function rejectTx(i){pendingTx[i].status='fail';renderSlips();showToast('✕ ปฏิเสธ '+pendingTx[i].id);}
+function viewSlip(i){
+  const tx=pendingTx[i];
+  document.getElementById('slipFrom').textContent=tx.user+' · '+tx.method;
+  document.getElementById('slipAmt').textContent=fmt(tx.amount)+' ฿';
+  document.getElementById('slipTime').textContent=tx.date;
+  document.getElementById('slipApproveBtn').onclick=()=>{approveTx(i);closeModal('slipModal');};
+  document.getElementById('slipRejectBtn').onclick=()=>{rejectTx(i);closeModal('slipModal');};
+  document.getElementById('slipModal').classList.add('open');
+}
+
+function renderEditSite(){
+  document.getElementById('adminEditSite').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">🖥️ ข้อมูลเว็บไซต์</div>
+    <div class="edit-section">
+      <div class="edit-section-title">🏷️ ชื่อและ Branding</div>
+      <div class="edit-row">
+        <div class="edit-group"><div class="edit-label">ชื่อเว็บ</div><input class="edit-input" id="es_title" value="${SITE.title}"></div>
+        <div class="edit-group"><div class="edit-label">โลโก้ (ตัวอักษร)</div><input class="edit-input" id="es_logo" value="${SITE.logo}" maxlength="2"></div>
+      </div>
+      <div class="edit-label">คำอธิบาย</div><input class="edit-input" id="es_sub" value="${SITE.sub}" style="margin-bottom:14px">
+      <button class="save-btn" onclick="SITE.title=document.getElementById('es_title').value;SITE.logo=document.getElementById('es_logo').value;SITE.sub=document.getElementById('es_sub').value;applySiteConfig();showToast('✔ บันทึกแล้ว')">💾 บันทึก</button>
+    </div>
+    <div class="edit-section">
+      <div class="edit-section-title">🎨 Banner</div>
+      <div class="banner-preview">
+        <div id="bPrevTitle" style="font-family:'Cinzel',serif;font-size:32px;letter-spacing:3px">${SITE.bannerTitle}</div>
+        <div id="bPrevSub" style="color:#888;margin-top:8px;font-size:14px">${SITE.bannerSub}</div>
+      </div>
+      <div class="edit-label">หัวข้อ Banner</div>
+      <input class="edit-input" id="es_btitle" value="${SITE.bannerTitle}" style="margin-bottom:10px" oninput="document.getElementById('bPrevTitle').textContent=this.value">
+      <div class="edit-label">คำอธิบาย</div>
+      <input class="edit-input" id="es_bsub" value="${SITE.bannerSub}" style="margin-bottom:14px" oninput="document.getElementById('bPrevSub').textContent=this.value">
+      <button class="save-btn" onclick="SITE.bannerTitle=document.getElementById('es_btitle').value;SITE.bannerSub=document.getElementById('es_bsub').value;applySiteConfig();showToast('✔ บันทึก Banner แล้ว')">💾 บันทึก</button>
+    </div>
+    <div class="edit-section">
+      <div class="edit-section-title">🔗 ลิงก์และ Footer</div>
+      <div class="edit-label">Discord URL</div>
+      <input class="edit-input" id="es_discord" value="${SITE.discord}" style="margin-bottom:10px">
+      <div class="edit-label">ข้อความ Footer</div>
+      <input class="edit-input" id="es_footer" value="${SITE.footer}" style="margin-bottom:14px">
+      <button class="save-btn" onclick="SITE.discord=document.getElementById('es_discord').value;SITE.footer=document.getElementById('es_footer').value;applySiteConfig();showToast('✔ บันทึกแล้ว')">💾 บันทึก</button>
+    </div>`;
+}
+
+function renderEditRanks(){
+  document.getElementById('adminEditRanks').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">👑 จัดการยศ</div>
+    <div class="notice-box">การแก้ไขที่นี่จะมีผลทันทีกับหน้าร้านค้า กด "บันทึก" หลังแก้ไขเสร็จ</div>
+    ${RANKS.map((r,ri)=>`
+    <div class="rank-edit-card">
+      <div class="rank-edit-header">
+        <span class="rank-edit-badge" style="background:${r.bg};color:${r.color};border:1px solid ${r.color}40">${r.badge}</span>
+        <button class="del-btn" onclick="if(confirm('ลบยศ ${r.name}?')){RANKS.splice(${ri},1);renderEditRanks()}">🗑 ลบ</button>
+      </div>
+      <div class="edit-row">
+        <div class="edit-group"><div class="edit-label">ชื่อยศ</div><input class="edit-input" value="${r.name}" onchange="RANKS[${ri}].name=this.value"></div>
+        <div class="edit-group"><div class="edit-label">Badge</div><input class="edit-input" value="${r.badge}" onchange="RANKS[${ri}].badge=this.value"></div>
+        <div class="edit-group"><div class="edit-label">ราคา (฿)</div><input class="edit-input" type="number" value="${r.price}" onchange="RANKS[${ri}].price=parseInt(this.value)"></div>
+      </div>
+      <div class="edit-label">คำอธิบาย</div>
+      <input class="edit-input" value="${r.desc}" style="margin-bottom:10px" onchange="RANKS[${ri}].desc=this.value">
+      <div class="edit-row">
+        <div class="edit-group"><div class="edit-label">สีตัวอักษร</div><div class="color-row"><input type="color" class="color-pick" value="${r.color}" onchange="RANKS[${ri}].color=this.value"><input class="edit-input" value="${r.color}" onchange="RANKS[${ri}].color=this.value" style="margin-bottom:0"></div></div>
+        <div class="edit-group"><div class="edit-label">สีพื้นหลัง</div><div class="color-row"><input type="color" class="color-pick" value="${r.bg}" onchange="RANKS[${ri}].bg=this.value"><input class="edit-input" value="${r.bg}" onchange="RANKS[${ri}].bg=this.value" style="margin-bottom:0"></div></div>
+      </div>
+      <div class="edit-label" style="margin-top:8px">บินในเมือง</div>
+      <select class="edit-input" style="margin-bottom:10px" onchange="RANKS[${ri}].fly=this.value==='true'">
+        <option value="false" ${!r.fly?'selected':''}>❌ ไม่ได้</option>
+        <option value="true" ${r.fly?'selected':''}>✈️ ได้</option>
+      </select>
+    </div>`).join('')}
+    <button class="add-btn" onclick="RANKS.push({id:'rank'+Date.now(),name:'New Rank',badge:'⭐ New',color:'#ffffff',bg:'#1a1a1a',price:100,desc:'คำอธิบาย',commands:['/Craft — เปิดโต๊ะคราฟต์'],limits:[{k:'เซฟบ้าน',v:'3 จุด'}],fly:false});renderEditRanks()">+ เพิ่มยศใหม่</button>
+    <button class="save-btn" style="width:100%;padding:12px;margin-top:12px;font-size:14px" onclick="renderShop();showToast('✔ อัพเดทร้านค้าแล้ว!')">💾 บันทึกและอัพเดทร้านค้า</button>`;
+}
+
+function renderEditPayment(){
+  document.getElementById('adminEditPayment').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">💳 ช่องทางชำระเงิน</div>
+    ${METHODS.map((m,mi)=>`
+    <div class="edit-section">
+      <div class="edit-section-title">${m.logo} ${m.name}</div>
+      <div class="edit-row">
+        <div class="edit-group"><div class="edit-label">ชื่อช่องทาง</div><input class="edit-input" value="${m.name}" onchange="METHODS[${mi}].name=this.value"></div>
+        <div class="edit-group"><div class="edit-label">คำอธิบาย</div><input class="edit-input" value="${m.desc}" onchange="METHODS[${mi}].desc=this.value"></div>
+      </div>
+      <div class="edit-label">เบอร์ / เลขบัญชี</div>
+      <input class="edit-input" value="${m.phone||''}" style="margin-bottom:14px" onchange="METHODS[${mi}].phone=this.value">
+      <button class="save-btn" onclick="showToast('✔ บันทึก ${m.name} แล้ว')">💾 บันทึก</button>
+    </div>`).join('')}`;
+}
+
+function renderEditPackages(){
+  document.getElementById('adminEditPackages').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">💰 แพ็กเกจเติมเงิน</div>
+    ${PACKAGES.map((p,pi)=>`
+    <div class="edit-section" style="padding:14px">
+      <div class="edit-row" style="align-items:center">
+        <div class="edit-group"><div class="edit-label">จำนวนเงิน (฿)</div><input class="edit-input" type="number" value="${p.amount}" onchange="PACKAGES[${pi}].amount=parseInt(this.value);PACKAGES[${pi}].label=parseInt(this.value).toLocaleString('th-TH')+' ฿'" style="margin-bottom:0"></div>
+        <div class="edit-group"><div class="edit-label">โบนัส</div><input class="edit-input" value="${p.bonus}" placeholder="+XX ฿ ฟรี" onchange="PACKAGES[${pi}].bonus=this.value" style="margin-bottom:0"></div>
+        <button class="del-btn" style="margin-top:16px" onclick="PACKAGES.splice(${pi},1);renderEditPackages()">🗑</button>
+      </div>
+    </div>`).join('')}
+    <button class="add-btn" onclick="PACKAGES.push({amount:100,label:'100 ฿',bonus:''});renderEditPackages()">+ เพิ่มแพ็กเกจ</button>
+    <button class="save-btn" style="width:100%;padding:12px;margin-top:12px;font-size:14px" onclick="showToast('✔ บันทึกแพ็กเกจแล้ว')">💾 บันทึก</button>`;
+}
+
+function renderAdminUsers(){
+  document.getElementById('adminUsers').innerHTML=`
+    <div style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:20px;color:var(--gold)">👥 ผู้ใช้งานทั้งหมด</div>
+    <div class="user-list">
+    ${USERS.map((u,ui)=>`<div class="user-item">
+      <div class="user-av" style="background:${u.role==='admin'?'#7a5a00':'#d42b2b'};color:${u.role==='admin'?'#f0c040':'#fff'}">${u.username[0].toUpperCase()}</div>
+      <div class="user-item-info">
+        <div class="user-item-name">${u.username}</div>
+        <div class="user-item-sub">${u.email||'ไม่มีอีเมล'} · ยอดเงิน: ${fmt(u.balance)} ฿ · ยศ: ${u.owned.length}</div>
+      </div>
+      <span class="user-role-badge ${u.role==='admin'?'badge-admin':'badge-user'}">${u.role==='admin'?'⭐ Admin':'👤 User'}</span>
+      ${u.username!=='admin'?`
+      <button class="toggle-role-btn" onclick="USERS[${ui}].role=USERS[${ui}].role==='admin'?'user':'admin';renderAdminUsers();showToast('✔ เปลี่ยน Role แล้ว')">${u.role==='admin'?'→ User':'→ Admin'}</button>
+      <button class="del-btn" onclick="if(confirm('ลบ ${u.username}?')){USERS.splice(${ui},1);renderAdminUsers();showToast('✔ ลบแล้ว')}">🗑</button>`
+      :'<span style="font-size:11px;color:var(--white3)">ลบไม่ได้</span>'}
+    </div>`).join('')}
+    </div>
+    <div class="edit-section" style="margin-top:16px">
+      <div class="edit-section-title">➕ เพิ่มผู้ใช้ใหม่</div>
+      <div class="edit-row">
+        <div class="edit-group"><div class="edit-label">Username</div><input class="edit-input" id="nu_name" placeholder="ชื่อผู้ใช้" style="margin-bottom:0"></div>
+        <div class="edit-group"><div class="edit-label">Password</div><input class="edit-input" id="nu_pass" type="password" placeholder="รหัสผ่าน" style="margin-bottom:0"></div>
+        <div class="edit-group"><div class="edit-label">ยอดเงิน</div><input class="edit-input" id="nu_bal" type="number" placeholder="0" style="margin-bottom:0"></div>
+      </div>
+      <button class="save-btn" style="margin-top:12px" onclick="(()=>{
+        const n=document.getElementById('nu_name').value.trim();
+        const p=document.getElementById('nu_pass').value;
+        const b=parseInt(document.getElementById('nu_bal').value)||0;
+        if(!n||!p){showToast('❌ กรุณากรอกข้อมูลให้ครบ');return;}
+        if(USERS.find(u=>u.username===n)){showToast('❌ ชื่อซ้ำ');return;}
+        USERS.push({username:n,password:p,role:'user',email:'',balance:b,owned:[],history:[]});
+        renderAdminUsers();showToast('✔ เพิ่มผู้ใช้ '+n+' แล้ว');
+      })()">➕ เพิ่มผู้ใช้</button>
+    </div>`;
+}
+</script>
+</body>
+</html>
